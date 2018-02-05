@@ -23,11 +23,12 @@ def message(request):
 	message = ((request.body).decode('utf-8'))
 	received_json_data = json.loads(message)
 	return_str = received_json_data['content']
+	print(return_str)
 
 
 	return JsonResponse({
 		'message' : {
-		    'text' : return_str + '선택하셨습니다\n' + get_name(return_str)
+		    'text' : '입력을 확인합니다\n' + return_str + '\n' + get_name(return_str)
 		},
 		'keyboard' : {
             'type':'text'
@@ -45,3 +46,18 @@ def get_name(return_str):
     	return "------------\n" +  "말해보세요 \n"
     else :
     	return return_str + "이라고 쳤네~"
+
+
+@csrf_exempt
+def webhook(request):
+	message2 = ((request.body).decode('utf-8'))
+	print(message2)
+	received_json_data = json.loads(message2)
+	bus_stop = received_json_data['result']['parameters']['bus_stop']
+	bus_number = received_json_data['result']['parameters']['bus_number']
+	speech = received_json_data['result']['fulfillment']['speech']
+	print(bus_stop)
+	print(bus_number)
+	print(speech)
+
+	pass
